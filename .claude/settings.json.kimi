@@ -1,0 +1,12 @@
+{
+    "env": {
+        "ANTHROPIC_AUTH_TOKEN": "sk-sNTrmZznlzpPr6zQaJ99UuDjDeINh1GC2lec2ZvWAzkOZVkm",
+        "ANTHROPIC_BASE_URL": "https://api.moonshot.ai/anthropic",
+        "ANTHROPIC_MODEL": "kimi-k2.5",
+        "ANTHROPIC_OPUS_MODEL": "kimi-k2.5",
+        "ANTHROPIC_SONNET_MODEL": "kimi-k2.5",
+        "ANTHROPIC_HAIKU_MODEL": "kimi-k2.5",
+        "CLAUDE_CODE_SUBAGENT_MODEL": "kimi-k2.5",
+        "API_TIMEOUT_MS": "3000000"
+    }
+}
