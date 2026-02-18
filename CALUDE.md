@@ -13,7 +13,8 @@ This project uses `uv` for Python package management.
 ## Architecture
 
 Reference: Please refer to storm.md, which contains the summarized essence and core logic of the STORM paper.
-
+External Reference:
+The original STORM source code is located in externals/storm/. Refer to this directory for implementation details of the original paper's logic.
 ### Tech Stack & Core Technologies
 Framework: Use PydanticAI for building the agentic workflow.
 
