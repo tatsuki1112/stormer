@@ -1,3 +1,6 @@
 [submodule "externals/storm"]
 	path = externals/storm
 	url = https://github.com/stanford-oval/storm.git
+[submodule "externals/gpt-researcher"]
+	path = externals/gpt-researcher
+	url = https://github.com/assafelovic/gpt-researcher
