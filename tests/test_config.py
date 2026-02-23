@@ -7,6 +7,8 @@ import pytest
 from pydantic import ValidationError
 
 from stormer.config import Config, get_config
+from stormer.connectivity.openrouter import OpenRouterHealthChecker
+from stormer.connectivity.tavily import TavilyHealthChecker
 
 
 class TestConfig:
@@ -107,3 +109,120 @@ class TestConfig:
             assert isinstance(config, Config)
             assert config.openrouter_api_key.get_secret_value() == "test-openrouter-key"
             assert config.tavily_api_key.get_secret_value() == "test-tavily-key"
+
+    def test_config_has_tavily_base_url(self):
+        """Test that Config has tavily_base_url field with correct default."""
+        with patch.dict(
+            os.environ,
+            {
+                "OPENROUTER_API_KEY": "test-openrouter-key",
+                "TAVILY_API_KEY": "test-tavily-key",
+            },
+            clear=True,
+        ):
+            config = Config.from_env()
+
+            assert config.tavily_base_url == "https://api.tavily.com"
+
+    def test_config_with_custom_tavily_base_url(self):
+        """Test that Config accepts custom tavily_base_url."""
+        with patch.dict(
+            os.environ,
+            {
+                "OPENROUTER_API_KEY": "test-openrouter-key",
+                "TAVILY_API_KEY": "test-tavily-key",
+            },
+            clear=True,
+        ):
+            config = Config(
+                openrouter_api_key="test-key",
+                tavily_api_key="test-key",
+                tavily_base_url="https://custom.tavily.com",
+            )
+
+            assert config.tavily_base_url == "https://custom.tavily.com"
+
+    def test_create_openrouter_checker(self):
+        """Test that create_openrouter_checker returns correct instance."""
+        with patch.dict(
+            os.environ,
+            {
+                "OPENROUTER_API_KEY": "test-openrouter-key",
+                "TAVILY_API_KEY": "test-tavily-key",
+            },
+            clear=True,
+        ):
+            config = Config.from_env()
+            checker = config.create_openrouter_checker()
+
+            assert isinstance(checker, OpenRouterHealthChecker)
+            assert checker.api_key == "test-openrouter-key"
+            assert checker.base_url == "https://openrouter.ai/api/v1"
+            assert checker.timeout == 10.0
+
+    def test_create_openrouter_checker_with_custom_timeout(self):
+        """Test that create_openrouter_checker accepts custom timeout."""
+        with patch.dict(
+            os.environ,
+            {
+                "OPENROUTER_API_KEY": "test-openrouter-key",
+                "TAVILY_API_KEY": "test-tavily-key",
+            },
+            clear=True,
+        ):
+            config = Config.from_env()
+            checker = config.create_openrouter_checker(timeout=5.0)
+
+            assert checker.timeout == 5.0
+
+    def test_create_tavily_checker(self):
+        """Test that create_tavily_checker returns correct instance."""
+        with patch.dict(
+            os.environ,
+            {
+                "OPENROUTER_API_KEY": "test-openrouter-key",
+                "TAVILY_API_KEY": "test-tavily-key",
+            },
+            clear=True,
+        ):
+            config = Config.from_env()
+            checker = config.create_tavily_checker()
+
+            assert isinstance(checker, TavilyHealthChecker)
+            assert checker.api_key == "test-tavily-key"
+            assert checker.base_url == "https://api.tavily.com"
+            assert checker.timeout == 10.0
+
+    def test_create_tavily_checker_with_custom_timeout(self):
+        """Test that create_tavily_checker accepts custom timeout."""
+        with patch.dict(
+            os.environ,
+            {
+                "OPENROUTER_API_KEY": "test-openrouter-key",
+                "TAVILY_API_KEY": "test-tavily-key",
+            },
+            clear=True,
+        ):
+            config = Config.from_env()
+            checker = config.create_tavily_checker(timeout=5.0)
+
+            assert checker.timeout == 5.0
+
+    def test_create_tavily_checker_with_custom_base_url(self):
+        """Test that create_tavily_checker uses config's base_url."""
+        with patch.dict(
+            os.environ,
+            {
+                "OPENROUTER_API_KEY": "test-openrouter-key",
+                "TAVILY_API_KEY": "test-tavily-key",
+            },
+            clear=True,
+        ):
+            config = Config(
+                openrouter_api_key="test-key",
+                tavily_api_key="test-key",
+                tavily_base_url="https://custom.tavily.com",
+            )
+            checker = config.create_tavily_checker()
+
+            assert checker.base_url == "https://custom.tavily.com"

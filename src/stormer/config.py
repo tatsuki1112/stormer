@@ -33,6 +33,10 @@ class Config(BaseModel):
         default="https://openrouter.ai/api/v1",
         description="Base URL for OpenRouter API",
     )
+    tavily_base_url: str = Field(
+        default="https://api.tavily.com",
+        description="Base URL for Tavily API",
+    )
 
     @field_validator("openrouter_api_key", "tavily_api_key")
     @classmethod
@@ -75,6 +79,40 @@ class Config(BaseModel):
         return cls(
             openrouter_api_key=openrouter_key,  # type: ignore[arg-type]
             tavily_api_key=tavily_key,  # type: ignore[arg-type]
+        )
+
+    def create_openrouter_checker(self, timeout: float = 10.0):
+        """Create an OpenRouter health checker instance.
+
+        Args:
+            timeout: Request timeout in seconds (default: 10.0)
+
+        Returns:
+            OpenRouterHealthChecker instance configured with this config's API key and base URL
+        """
+        from stormer.connectivity.openrouter import OpenRouterHealthChecker
+
+        return OpenRouterHealthChecker(
+            api_key=self.openrouter_api_key.get_secret_value(),
+            base_url=self.openrouter_base_url,
+            timeout=timeout,
+        )
+
+    def create_tavily_checker(self, timeout: float = 10.0):
+        """Create a Tavily health checker instance.
+
+        Args:
+            timeout: Request timeout in seconds (default: 10.0)
+
+        Returns:
+            TavilyHealthChecker instance configured with this config's API key and base URL
+        """
+        from stormer.connectivity.tavily import TavilyHealthChecker
+
+        return TavilyHealthChecker(
+            api_key=self.tavily_api_key.get_secret_value(),
+            base_url=self.tavily_base_url,
+            timeout=timeout,
         )
 
 
