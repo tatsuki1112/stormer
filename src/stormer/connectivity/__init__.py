@@ -3,6 +3,7 @@
 This module provides health check functionality for external services used by STORMer:
 - OpenRouter (LLM API)
 - Tavily (search API)
+- DuckDuckGo (search API, no authentication required)
 """
 
 from stormer.connectivity.base import HealthCheckResult, ServiceHealthChecker, ServiceStatus
@@ -13,6 +14,7 @@ from stormer.connectivity.exceptions import (
     ServiceUnavailableError,
     TimeoutError,
 )
+from stormer.connectivity.duckduckgo import DuckDuckGoHealthChecker
 from stormer.connectivity.openrouter import OpenRouterHealthChecker
 from stormer.connectivity.tavily import TavilyHealthChecker
 
@@ -30,4 +32,5 @@ __all__ = [
     # Service checkers
     "OpenRouterHealthChecker",
     "TavilyHealthChecker",
+    "DuckDuckGoHealthChecker",
 ]
