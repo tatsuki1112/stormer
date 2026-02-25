@@ -68,3 +68,8 @@ uv.lock
 # OS
 .DS_Store
 Thumbs.db
+
+# YAML configuration files (may contain sensitive settings)
+stormer.yaml
+stormer.yml
+

@@ -10,6 +10,8 @@ uv sync
 
 ## Configuration
 
+### Quick Start
+
 Copy `.env.example` to `.env` and add your API keys:
 
 ```bash
@@ -26,6 +28,61 @@ Optional configuration:
 - `TAVILY_BASE_URL`: Tavily API base URL (default: `https://api.tavily.com`)
 
 **Note:** DuckDuckGo search is available as a no-authentication-required alternative to Tavily.
+
+### YAML Configuration (Alternative)
+
+For application settings like model selection, base URLs, and timeouts, you can use a YAML configuration file instead of environment variables.
+
+#### Setup
+
+1. Copy the example configuration:
+   ```bash
+   cp stormer.yaml.example stormer.yaml
+   ```
+
+2. Edit `stormer.yaml` to customize your settings:
+   ```yaml
+   openrouter:
+     model: "anthropic/claude-3-5-sonnet"
+     base_url: "https://openrouter.ai/api/v1"
+     timeout: 10.0
+
+   tavily:
+     base_url: "https://api.tavily.com"
+     timeout: 10.0
+   ```
+
+#### Configuration File Locations
+
+STORMer searches for configuration files in the following order (first found wins):
+1. `./stormer.yaml` or `./stormer.yml` (current working directory)
+2. `$HOME/.stormer/config.yaml` (user home directory)
+
+#### Configuration Priority
+
+When both environment variables and YAML configuration are present, environment variables take priority:
+
+1. **Environment variables** (highest priority)
+2. **YAML configuration file**
+3. **Built-in defaults** (lowest priority)
+
+#### Security Note
+
+**API keys should ALWAYS be set in your `.env` file, never in YAML files.**
+
+The YAML configuration is designed for application settings only. Any `api_key` fields in YAML files are explicitly ignored for security reasons.
+
+#### Environment Variable Overrides
+
+All YAML settings can be overridden with environment variables:
+
+| YAML Setting | Environment Variable |
+|-------------|---------------------|
+| `openrouter.model` | `OPENROUTER_MODEL` |
+| `openrouter.base_url` | `OPENROUTER_BASE_URL` |
+| `openrouter.timeout` | `OPENROUTER_TIMEOUT` |
+| `tavily.base_url` | `TAVILY_BASE_URL` |
+| `tavily.timeout` | `TAVILY_TIMEOUT` |
 
 ## Connectivity Check
 
@@ -184,6 +241,7 @@ uv run ruff format .
 stormer/
 ├── src/stormer/
 │   ├── config.py              # Configuration management
+│   ├── yaml_config.py         # YAML configuration loading
 │   └── connectivity/          # Connectivity checking module
 │       ├── base.py            # Base abstractions
 │       ├── exceptions.py      # Custom exceptions
@@ -192,6 +250,7 @@ stormer/
 │       └── duckduckgo.py      # DuckDuckGo health checker (no auth)
 ├── tests/
 │   ├── test_config.py         # Config tests
+│   ├── test_yaml_config.py    # YAML config tests
 │   └── test_connectivity/     # Connectivity tests
 │       ├── test_base.py
 │       ├── test_exceptions.py
@@ -200,5 +259,7 @@ stormer/
 │       └── test_duckduckgo.py
 ├── examples/
 │   └── connectivity_check.py  # Connectivity check example
+├── stormer.yaml.example       # Example YAML configuration
+├── .env.example               # Example environment variables
 └── test_connectivity_quick.py # Quick test script
 ```

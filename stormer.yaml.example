@@ -1,0 +1,53 @@
+# STORMer Application Configuration
+#
+# This file contains application settings for STORMer.
+# API keys should be set in your .env file for security.
+#
+# Configuration Priority:
+# 1. Environment variables (highest)
+# 2. YAML configuration file (this file)
+# 3. Built-in defaults (lowest)
+#
+# File Locations:
+# - Current directory: ./stormer.yaml or ./stormer.yml
+# - Home directory: ~/.stormer/config.yaml
+#
+# Files in current directory take priority over home directory.
+
+# OpenRouter Configuration
+openrouter:
+  # Model to use for LLM operations
+  # Default: anthropic/claude-3-5-sonnet
+  # Can be overridden with OPENROUTER_MODEL environment variable
+  model: "anthropic/claude-3-5-sonnet"
+
+  # Base URL for OpenRouter API
+  # Default: https://openrouter.ai/api/v1
+  # Can be overridden with OPENROUTER_BASE_URL environment variable
+  base_url: "https://openrouter.ai/api/v1"
+
+  # Request timeout in seconds
+  # Default: 10.0
+  # Can be overridden with OPENROUTER_TIMEOUT environment variable
+  timeout: 10.0
+
+# Tavily Configuration
+tavily:
+  # Base URL for Tavily API
+  # Default: https://api.tavily.com
+  # Can be overridden with TAVILY_BASE_URL environment variable
+  base_url: "https://api.tavily.com"
+
+  # Request timeout in seconds
+  # Default: 10.0
+  # Can be overridden with TAVILY_TIMEOUT environment variable
+  timeout: 10.0
+
+# IMPORTANT: API Keys
+# For security reasons, API keys should NEVER be stored in this file.
+# Always set API keys in your .env file:
+#
+# OPENROUTER_API_KEY=your_key_here
+# TAVILY_API_KEY=your_key_here
+#
+# The application will ignore any api_key fields in this YAML file.
