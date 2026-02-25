@@ -12,11 +12,11 @@ import yaml
 
 
 def find_yaml_config() -> Path | None:
-    """Find YAML configuration file in standard locations.
+    """Find YAML configuration file in the project directory.
 
-    Searches for configuration files in the following priority order:
-    1. ./stormer.yaml or ./stormer.yml (current working directory)
-    2. $HOME/.stormer/config.yaml (user home directory)
+    Searches for configuration files in the current working directory:
+    - ./stormer.yaml
+    - ./stormer.yml
 
     Returns:
         Path to the first found configuration file, or None if not found
@@ -27,12 +27,6 @@ def find_yaml_config() -> Path | None:
         yaml_path = cwd / yaml_name
         if yaml_path.exists() and yaml_path.is_file():
             return yaml_path
-
-    # Check home directory for ~/.stormer/config.yaml
-    home = Path(os.environ.get("HOME", Path.home()))
-    home_config = home / ".stormer" / "config.yaml"
-    if home_config.exists() and home_config.is_file():
-        return home_config
 
     return None
 

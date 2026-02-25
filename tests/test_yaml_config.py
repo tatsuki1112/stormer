@@ -37,40 +37,9 @@ class TestFindYamlConfig:
 
         assert result == config_file
 
-    def test_find_yaml_in_home_directory(self, tmp_path):
-        """Test that find_yaml_config finds config in ~/.stormer/."""
-        home_dir = tmp_path / "home"
-        stormer_dir = home_dir / ".stormer"
-        stormer_dir.mkdir(parents=True)
-        config_file = stormer_dir / "config.yaml"
-        config_file.write_text("openrouter:\n  model: test-model\n")
-
-        with patch.dict(os.environ, {"HOME": str(home_dir), "PWD": str(tmp_path)}):
-            result = find_yaml_config()
-
-        assert result == config_file
-
-    def test_find_yaml_current_dir_takes_priority(self, tmp_path):
-        """Test that current directory YAML takes priority over home directory."""
-        # Create home config
-        home_dir = tmp_path / "home"
-        stormer_dir = home_dir / ".stormer"
-        stormer_dir.mkdir(parents=True)
-        home_config = stormer_dir / "config.yaml"
-        home_config.write_text("openrouter:\n  model: home-model\n")
-
-        # Create current dir config
-        current_config = tmp_path / "stormer.yaml"
-        current_config.write_text("openrouter:\n  model: current-model\n")
-
-        with patch.dict(os.environ, {"HOME": str(home_dir), "PWD": str(tmp_path)}):
-            result = find_yaml_config()
-
-        assert result == current_config
-
     def test_find_yaml_returns_none_when_missing(self, tmp_path):
         """Test that find_yaml_config returns None when no YAML file exists."""
-        with patch.dict(os.environ, {"HOME": str(tmp_path), "PWD": str(tmp_path)}):
+        with patch.dict(os.environ, {"PWD": str(tmp_path)}):
             result = find_yaml_config()
 
         assert result is None

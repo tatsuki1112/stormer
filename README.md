@@ -54,9 +54,8 @@ For application settings like model selection, base URLs, and timeouts, you can 
 
 #### Configuration File Locations
 
-STORMer searches for configuration files in the following order (first found wins):
-1. `./stormer.yaml` or `./stormer.yml` (current working directory)
-2. `$HOME/.stormer/config.yaml` (user home directory)
+STORMer searches for configuration files in the current working directory:
+- `./stormer.yaml` or `./stormer.yml`
 
 #### Configuration Priority
 

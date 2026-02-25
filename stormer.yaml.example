@@ -10,9 +10,6 @@
 #
 # File Locations:
 # - Current directory: ./stormer.yaml or ./stormer.yml
-# - Home directory: ~/.stormer/config.yaml
-#
-# Files in current directory take priority over home directory.
 
 # OpenRouter Configuration
 openrouter:
